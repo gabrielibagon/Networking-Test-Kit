@@ -1,5 +1,0 @@
-matplotlib==1.5.3
-numpy==1.11.1
-pylsl==1.10.5
-python_osc==1.6.2
-OSC==0.0
