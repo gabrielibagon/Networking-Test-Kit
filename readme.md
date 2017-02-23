@@ -2,17 +2,17 @@
 
 This repository contains a collection of scripts for testing networking functionality for OSC, UDP, and LSL. This is intended for use with OpenBCI networking functionality, but could work for other tasks as well.
 
-# Table of contents
-1. [Installation](#Installation)
-2. [Usage](#Use)
-3. [OSC](#OSC)
+## Contents
++ [Installation](#Installation)
++ [Usage](#Use)
++ [OSC](#OSC)
   + [Send](#OSC-Sending)
   + [Receive](#OSC-Receiving)
-4. [UDP](#UDP)
++ [UDP](#UDP)
   + [Send](#UDP-Sending)
   2. [Receive](#UDP-Receiving)
 
- <a name="Usage"/>
+<a name="Usage"/>
 ## Installation
 The scripts should work for Python 2 and Python 3. Install a different OSC package depending on your version of python.
 
@@ -35,7 +35,7 @@ If you are using the OpenBCI GUI, the first step might be to check if the GUI is
 Similarly, the **send** scripts can be used to determine if you can receive data in this 3rd party program. If you are sending data from this script and cannot receive it in a 3rd party program, check to see if your program is correctly configured to accept incoming connections. If you are sending data with the script and can receive it with the 3rd party program, but not with data sent from the OpenBCI GUI, check to see if your setup in the GUI is correct.
 
 The "send" and "receive" scripts can also be used together to test your network, or as a sanity check for the settings your a using.
-
+___
  <a name="OSC"/>
 ## OSC
  <a name="OSC-Receiving"/>
@@ -72,6 +72,8 @@ Listen to and print messages from IP 137.110.96.253, port 8888, address "\accel"
 ```
 python osc_receive.py --ip=137.110.96.253 --port=8888 --address=\accel
 ```
+
+
 <a name="OSC-Sending"/>
 ### Sending
 Run the script **osc_send.py** to test sending to OSC messages. Use this to ensure that your program is configured to receive messages correctly.
@@ -93,6 +95,7 @@ Send messages to IP 137.110.96.253, port 8888, address "\accel"
 ```
 python osc_send.py --ip=137.110.96.253 --port=8888 --address=\accel
 ```
+___
 <a name="UDP"/>
 ## UDP
 <a name="UDP-Receiving"/>
@@ -146,5 +149,5 @@ python udp_send.py
 
 Send messages to IP 137.110.96.253, port 8888.
 ```
-python udp_send.py --ip=137.110.96.253 --port=8888 --address=\accel
+python udp_send.py --ip=137.110.96.253 --port=8888
 ```
