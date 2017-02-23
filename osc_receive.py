@@ -1,28 +1,39 @@
-"""Small example OSC server
-This program listens to several addresses, and prints some information about
-received packets.
-"""
 import argparse
-import math
-
+import time
+import atexit
+import os
 from pythonosc import dispatcher
 from pythonosc import osc_server
+import signal
+import sys
 
-def print_volume_handler(unused_addr, args, volume):
-  print("[{0}] ~ {1}".format(args[0], volume))
-
-def print_compute_handler(unused_addr, args, volume):
+# Print received message to console
+def print_message(*args):
   try:
-    print("[{0}] ~ {1}".format(args[0], args[1](volume)))
+      current = time.time()
+      print("(%f) RECEIVED MESSAGE: %s %s" % (current, args[0], ",".join(str(x) for x in args[1:])))
   except ValueError: pass
 
-def print_message(args,msg):
-  try:
-      print("RECEIVED MESSAGE: ", args, msg)
-    # print("[{0}] ~ {1}".format(args[0], args[1](volume)))
-  except ValueError: pass
+# Clean exit from print mode
+def exit_print(signal, frame):
+    print("Closing listener")
+    sys.exit(0)
+
+# Record received message in text file
+def record_to_file(*args):
+    textfile.write(str(time.time()) + ",")
+    textfile.write(",".join(str(x) for x in args))
+    textfile.write("\n")
+
+# Save recording, clean exit from record mode
+def close_file(*args):
+    print("\nFILE SAVED")
+    textfile.close()
+    sys.exit(0)
+
 
 if __name__ == "__main__":
+  # Collect command line arguments
   parser = argparse.ArgumentParser()
   parser.add_argument("--ip",
       default="localhost", help="The ip to listen on")
@@ -32,16 +43,29 @@ if __name__ == "__main__":
   parser.add_argument("--option",default="print",help="Debugger option")
   args = parser.parse_args()
 
+  # Set up necessary parameters from command line
   dispatcher = dispatcher.Dispatcher()
   if args.option=="print":
-      dispatcher.map("/openbci", print)
-  elif args.option=="record":
-      dispatcher.map("/openbci", record_to_file)
+      dispatcher.map("/openbci", print_message)
+      signal.signal(signal.SIGINT, exit_print)
 
+  elif args.option=="record":
+      i = 0
+      while os.path.exists("osc_test%s.txt" % i):
+        i += 1
+      filename = "osc_test%i.txt" % i
+      textfile = open(filename, "w")
+      textfile.write("time,address,messages\n")
+      textfile.write("-------------------------\n")
+      print("Recording to %s" % filename)
+      dispatcher.map("/openbci", record_to_file)
+      signal.signal(signal.SIGINT, close_file)
+
+  # connect server
   server = osc_server.ThreadingOSCUDPServer(
       (args.ip, args.port), dispatcher)
 
-
+  # Display server attributes
   print('--------------------')
   print("-- OSC LISTENER -- ")
   print('--------------------')
@@ -49,6 +73,8 @@ if __name__ == "__main__":
   print("PORT:", server.server_address[1])
   print("ADDRESS:", args.address)
   print('--------------------')
+  print("%s option selected" % args.option)
 
-  print("Waiting for messages...")
+  # Listen for incoming messages
+  print("Listening...")
   server.serve_forever()

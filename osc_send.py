@@ -7,6 +7,8 @@ from pythonosc import udp_client
 
 
 if __name__ == "__main__":
+
+  # Collect command line arguments
   parser = argparse.ArgumentParser()
   parser.add_argument("--ip", default="127.0.0.1",
       help="The ip of the OSC server")
@@ -14,11 +16,12 @@ if __name__ == "__main__":
       help="The port the OSC server is listening on")
   parser.add_argument("--address", default="/openbci",
       help="The address the OSC server is sending to")
-
   args = parser.parse_args()
 
+  # Establish UDP client (for OSC)
   client = udp_client.SimpleUDPClient("127.0.0.1", 12345 )
 
+  # Display socket attributes
   print('--------------------')
   print("-- OSC SIMULATION -- ")
   print('--------------------')
@@ -27,8 +30,9 @@ if __name__ == "__main__":
   print("ADDRESS:", args.address)
   print('--------------------')
 
+  # Send test data
   while (1):
-    msg = random.random()
+    msg = [random.random() for x in range(8)]
     print("SENT MESSAGE: ", msg )
     client.send_message(args.address, msg)
     time.sleep(.25)
