@@ -110,9 +110,13 @@ Run the script **udp_receive.py** to test listening to UDP messages. Use this to
 --option  - specify a debugger option       [Default = print]
 ```
 
+**Len**
+If you are receiving data other than 8 channel Time Series data (i.e. FFT or triggers), you *must* specify a length. The length is usually the number of channels you are sending (4 for the Ganglion, 16 for the Cyton with Daisy, 1 for a marker stream, etc). If you are sending FFT data, this must be 125.
+
 **Debugger Options**
 
 There are two debugger options: **print** or **record**. **Print** outputs the messages receives to the console, while **record** saves a text file to this directory with the messages the debugger has received.
+
 
 
 **Examples:**
