@@ -9,7 +9,7 @@ import os
 # Print received message to console
 def print_message(*args):
   print("(%s) RECEIVED MESSAGE: " % time.time() +
- ''.join(str(struct.unpack('>%df' % length,args[0]))))
+ ''.join(str(struct.unpack('>%df' % int(length),args[0]))))
 
 # Clean exit from print mode
 def exit_print(signal, frame):
