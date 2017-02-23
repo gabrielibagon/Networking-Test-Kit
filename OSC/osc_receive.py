@@ -5,8 +5,8 @@ import os
 import signal
 import sys
 if sys.version_info.major == 3:
-    from pythonosc import osc_message_builder
-    from pythonosc import udp_client
+    from pythonosc import dispatcher
+    from pythonosc import osc_server
 elif sys.version_info.major == 2:
     import OSC
 
@@ -15,7 +15,11 @@ elif sys.version_info.major == 2:
 def print_message(*args):
   try:
       current = time.time()
-      print("(%f) RECEIVED MESSAGE: %s %s" % (current, args[0], ",".join(str(x) for x in args[1:])))
+      if sys.version_info.major == 2:
+          print("(%f) RECEIVED MESSAGE: %s %s" % (current, args[0], ",".join(str(x) for x in args[2:])))
+      elif sys.version_info.major == 3:
+          print("(%f) RECEIVED MESSAGE: %s %s" % (current, args[0], ",".join(str(x) for x in args[1:])))
+
   except ValueError: pass
 
 # Clean exit from print mode
@@ -71,8 +75,8 @@ if __name__ == "__main__":
       print('--------------------')
       print("-- OSC LISTENER -- ")
       print('--------------------')
-      print("IP:", server.server_address[0])
-      print("PORT:", server.server_address[1])
+      print("IP:", args.ip)
+      print("PORT:", args.port)
       print("ADDRESS:", args.address)
       print('--------------------')
       print("%s option selected" % args.option)
@@ -81,6 +85,8 @@ if __name__ == "__main__":
       # connect server
       server = osc_server.ThreadingOSCUDPServer(
           (args.ip, args.port), dispatcher)
+      server.serve_forever()
+
   elif sys.version_info.major == 2:
     s = OSC.OSCServer((args.ip, args.port))  # listen on localhost, port 57120
     if args.option=="print":
@@ -104,10 +110,6 @@ if __name__ == "__main__":
     print("ADDRESS:", args.address)
     print('--------------------')
     print("%s option selected" % args.option)
+    print("Listening...")
+
     s.serve_forever()
-
-
-
-  # Listen for incoming messages
-  print("Listening...")
-  server.serve_forever()
