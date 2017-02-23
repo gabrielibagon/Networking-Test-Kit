@@ -34,7 +34,7 @@ If you are using the OpenBCI GUI, the first step might be to check if the GUI is
 
 Similarly, the **send** scripts can be used to determine if you can receive data in this 3rd party program. If you are sending data from this script and cannot receive it in a 3rd party program, check to see if your program is correctly configured to accept incoming connections. If you are sending data with the script and can receive it with the 3rd party program, but not with data sent from the OpenBCI GUI, check to see if your setup in the GUI is correct.
 
-The "send" and "receive" scripts can also be used together to test your network, or as a sanity check for the settings your a using.
+The "send" and "receive" scripts can also be used together to test your network, or as a sanity check for the settings your are using.
 ___
  <a name="OSC"/>
 ## OSC
