@@ -106,6 +106,7 @@ Run the script **udp_receive.py** to test listening to UDP messages. Use this to
 ```
 --ip      - specify an IP address           [Default = 127.0.0.1]
 --port    - specify the port number         [Default = 12345]
+--len     - specify the length of message   [Default = 8]
 --option  - specify a debugger option       [Default = print]
 ```
 
