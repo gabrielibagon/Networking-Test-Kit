@@ -8,8 +8,12 @@ import os
 
 # Print received message to console
 def print_message(*args):
-  print("(%s) RECEIVED MESSAGE: " % time.time() +
+  try:
+    print("(%s) RECEIVED MESSAGE: " % time.time() +
  ''.join(str(struct.unpack('>%df' % int(length),args[0]))))
+  except (struct.error):
+    print("\nMessage Length Error: Specify number of channels with '--len'")
+    sys.exit(0)
 
 # Clean exit from print mode
 def exit_print(signal, frame):
