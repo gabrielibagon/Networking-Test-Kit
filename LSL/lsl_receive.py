@@ -40,11 +40,11 @@ if __name__ == "__main__":
         signal.signal(signal.SIGINT, exit_print)
     elif args.option=="record":
         i = 0
-        while os.path.exists("udp_test%s.txt" % i):
+        while os.path.exists("lsl_test%s.txt" % i):
           i += 1
-        filename = "udp_test%i.txt" % i
+        filename = "lsl_test%i.txt" % i
         textfile = open(filename, "w")
-        textfile.write("time,address,messages\n")
+        textfile.write("timestamp,data\n")
         textfile.write("-------------------------\n")
         print("Recording to %s" % filename)
         signal.signal(signal.SIGINT, close_file)
